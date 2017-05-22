@@ -1,0 +1,50 @@
+body {
+  background: #ddddee;
+  text-align: center;
+}
+div {
+  text-align: center;
+  align-content: center;
+  align-items: center; 
+  margin: auto;
+}
+h5, button, .col-2, .col-4 {
+  padding: 0 !important;
+  margin: 0 !important;
+}
+.row {
+  padding: 0;
+  margin: 5px 0;
+}
+#numDisplay {
+  text-align: right;
+  border-style: inset;  
+  height: 40px;
+  font-size: 150%;
+  letter-spacing: 2px;
+}
+.calcContainer {
+  width: 370px;
+  background: #aabbaa;
+  padding: 10px;
+  border-radius: 7px;
+  
+}
+.calcButton {
+  color: #000000;
+  background: #636353;
+  width: 50px;
+  height: 50px;  
+}
+.calcButton-wide {
+  width: 80px;
+}
+.calcButton:hover {
+  border-color: black;
+}
+.calcButton:hover h5 {
+  font-weight: bold;
+}
+p {
+  padding: 17px;
+}
