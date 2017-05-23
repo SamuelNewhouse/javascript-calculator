@@ -35,80 +35,27 @@ $(function() {
     return str;
   }
   
-  function toNoSciNotation (num) {
-    return num.toFixed(20).replace(/\.?0+$/,"");
-  }
+  // Order Of Operations Grouping...
+  // Select all consecutive multiplications and divisions as a group,
+  // and select additions and subtractions as individual numbeers.
+  // var reOOOGrouping = /(?:[\-\+]*[\.\d]+(?:[x/][\-\+]*[\d\.]+)+|[\-\+]*[\.\d]+)/g;
+  function calculateString(str, orderOfOps) {    
+    var result = simplifySigns(str);
+    var strArray = [];
+    var numArray = [];
+    var reOOOGrouping = /(?:[\-\+]*[\.\d]+(?:[x/][\-\+]*[\d\.]+)+|[\-\+]*[\.\d]+)/g;
+    var reMultOrDiv = /[x/]/;
 
-  function multiplyDivide (str) {
-    function doMultiply(str) {
-      var result = "";
-      var operands = str.split("x");
-      var leftHand = parseFloat(operands[0]);
-      var rightHand = parseFloat(operands[1]);
-      var calculation = leftHand * rightHand;      
-      result = "+";
-      return result + toNoSciNotation(calculation);
-    }
-    function doDivide(str) {
-      var result = "";
-      var operands = str.split("/");
-      var leftHand = parseFloat(operands[0]);
-      var rightHand = parseFloat(operands[1]);
-      if ( rightHand === 0 ) {
-        isError = true;
-        return "Division by 0";
+    strArray = result.match(reOOOGrouping);
+
+    for ( var i = 0; i < strArray.length; i++) {
+      var subStr = strArray[i];
+      if ( reMultOrDiv.test(subStr) ) {
+        
       }
-      var calculation = leftHand / rightHand;
-      result = "+";
-      return result + toNoSciNotation(calculation);
-    }
-    function hasMult(str) { return str.indexOf("x") !== -1; }
-    function hasDiv(str) { return str.indexOf("/") !== -1; }
 
-    var selection = /[\-\+]*[\.\d]+(\x|\/)[\-\+]*[\d\.]+/;
-    str = simplifySigns(str);
-    var result = str;
-    while( hasMult(result) || hasDiv(result) ) {
-      result = result.replace(selection, function (match) {
-        if ( hasMult(match) )
-          return doMultiply(match);
-        else if ( hasDiv(match) )
-          return doDivide(match);
-        else
-          return match;
-      });
-      result = simplifySigns(result);
-    }
-    return result;
-  }
-  
-  function addSubtract (str) {
-    var selection = /[\-\+]*[\.\d]+(\+|\-)[\-\+]*[\d\.]+/;
-    var leftRightSel = /([\-\+]*[\.\d]+)/g;
-    
-    str = simplifySigns(str);       
-    var match = str.match(selection)    
-    while( match !== null ) {
-      str = str.replace(selection, function (match) {
-        var result = "+";
-        var leftRightMatches = match.match(leftRightSel);
-        var leftHand = parseFloat(leftRightMatches[0]);
-        var rightHand = parseFloat(leftRightMatches[1]);
-        var calculation = leftHand + rightHand;
-        return result + toNoSciNotation(calculation);
-      });
-      str = simplifySigns(str);
-      match = str.match(selection)
-    };
-    str = simplifySigns(str);
-    return str;
-  }
-  
-  function calculateString(str, orderOfOps) {
-    var result = str;
-    
-    result = multiplyDivide(result);
-    result = addSubtract(result);
+    }    
+
     return result;
   }
 
@@ -170,8 +117,7 @@ $(function() {
         isError = true;        
         inputString = "Number limit exceeded.";        
       }
-      inputString = inputString.substring(0, charLimit - 4); // 
-      inputString = inputString.replace(/\.?0+$/,""); // Trim trailing zeroes.
+      inputString = inputString.substring(0, charLimit - 4);
       setLastSymbolInfo();
     }
     
