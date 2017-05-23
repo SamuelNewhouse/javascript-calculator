@@ -37,7 +37,7 @@ $(function() {
   
   // Order Of Operations Grouping...
   // Select all consecutive multiplications and divisions as a group,
-  // and select additions and subtractions as individual numbeers.
+  // and select additions and subtractions as individual numbers.
   // var reOOOGrouping = /(?:[\-\+]*[\.\d]+(?:[x/][\-\+]*[\d\.]+)+|[\-\+]*[\.\d]+)/g;
   function calculateString(str, orderOfOps) {    
     var result = simplifySigns(str);
@@ -48,15 +48,32 @@ $(function() {
 
     strArray = result.match(reOOOGrouping);
 
-    for ( var i = 0; i < strArray.length; i++) {
+    for ( var i = 0; i < strArray.length; i++ ) {			
       var subStr = strArray[i];
-      if ( reMultOrDiv.test(subStr) ) {
-        
-      }
+      var multDivIndex = subStr.search(reMultOrDiv);			
 
-    }    
+      if ( multDivIndex !== -1 ) {
+				var curVal = parseFloat(subStr.slice(0, multDivIndex)); // Left hand number.
+				var	operator = subStr.slice(multDivIndex, multDivIndex + 1); // Operator.
+				var rightHandIndex = undefined;
+				var rightHand = undefined;
+				while ( multDivIndex !== -1) {
+					subStr = subStr.slice(multDivIndex + 1); // Right hand plus everything else
+					multDivIndex = subStr.search(reMultOrDiv); // End of right hand.
+					rightHandIndex = multDivIndex > -1 ? multDivIndex : subStr.length; // End of one number or end of string?
+					rightHand = parseFloat(subStr.slice(0, rightHandIndex)); // Right hand number.
 
-    return result;
+					if ( operator === 'x' )
+						curVal *= rightHand;
+					else
+						curVal /= rightHand;					
+					
+					operator = subStr.slice(multDivIndex, multDivIndex + 1);
+				}
+				numArray.push(curVal);
+			}				
+		}
+		return result;
   }
 
   function updateNumDisplay(str) {
