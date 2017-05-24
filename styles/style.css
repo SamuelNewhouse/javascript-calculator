@@ -18,7 +18,10 @@ h5, button, .col-2, .col-4 {
 }
 #numDisplay {
 	text-align: right;
+	background-color: #bfcfbf;
+	border-color: #bbccbb;
 	border-style: inset;
+	border-width: 2px;
 	height: 40px;
 	font-size: 150%;
 	letter-spacing: 2px;
@@ -28,10 +31,15 @@ h5, button, .col-2, .col-4 {
 	background: #aabbaa;
 	padding: 10px;
 	border-radius: 7px;
+	border-color: #bbccbb;
+	border-style: outset;
+	border-width: 2px;
 }
 .calcButton {
 	color: #000000;
-	background: #636353;
+	background: #97b2a0;
+	border-color: #44604e;
+	border-style: outset;
 	width: 50px;
 	height: 50px;
 }
