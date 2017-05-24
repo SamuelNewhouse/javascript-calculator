@@ -61,7 +61,7 @@ $(function () {
 				while (multDivIndex !== -1) {
 					subStr = subStr.slice(multDivIndex + 1); // Delete left hand, leave right hand plus everything else.
 					multDivIndex = subStr.search(reMultOrDiv); // End of right hand.
-					rightHandIndex = multDivIndex > -1 ? multDivIndex : subStr.length; // End of one number or end of string?
+					rightHandIndex = multDivIndex > -1 ? multDivIndex : subStr.length; // End of one number or end of whole sequence?
 					rightHand = parseFloat(subStr.slice(0, rightHandIndex)); // Right hand number.
 
 					if (operator === 'x')

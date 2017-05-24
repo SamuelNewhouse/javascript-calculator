@@ -2,6 +2,9 @@ body {
 	background: #ddddee;
 	text-align: center;
 }
+h2 {
+	font-family: 'Source Code Pro', monospace;
+}
 div {
 	text-align: center;
 	align-content: center;
@@ -54,4 +57,5 @@ h5, button, .col-2, .col-4 {
 }
 p {
 	padding: 17px;
+	font-style: italic;
 }
