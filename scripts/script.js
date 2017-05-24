@@ -1,5 +1,5 @@
 $(function () {
-	var charLimit = 18;
+	var charLimit = 20;
 	var isError = false;
 
 	var keyButtons = {
@@ -40,13 +40,13 @@ $(function () {
 	// and select additions and subtractions as individual numbers.
 	// var reOOOGrouping = /(?:[\-\+]*[\.\d]+(?:[x/][\-\+]*[\d\.]+)+|[\-\+]*[\.\d]+)/g;
 	function calculateString(str, orderOfOps) {
-		var result = simplifySigns(str);
+		str = simplifySigns(str);
 		var strArray = [];
 		var numArray = [];
 		var reOOOGrouping = /(?:[\-\+]*[\.\d]+(?:[x/][\-\+]*[\d\.]+)+|[\-\+]*[\.\d]+)/g;
 		var reMultOrDiv = /[x/]/;
 
-		strArray = result.match(reOOOGrouping);
+		strArray = str.match(reOOOGrouping);
 
 		for (var i = 0; i < strArray.length; i++) {
 			var subStr = strArray[i];
@@ -65,15 +65,22 @@ $(function () {
 
 					if (operator === 'x')
 						curVal *= rightHand;
-					else
+					else if (rightHand === 0) {
+						isError = true;
+						return "Division by 0.";
+					} else {
 						curVal /= rightHand;
+					}
 
 					operator = subStr.slice(multDivIndex, multDivIndex + 1);
 				}
-				numArray.push(curVal);
+				numArray.push(curVal); // Multiplication and division completed.
+			}
+			else {
+				numArray.push(parseFloat(subStr));
 			}
 		}
-		return result;
+		return numArray.reduce(function (accum, curVal) { return accum + curVal; });
 	}
 
 	function updateNumDisplay(str) {
@@ -129,12 +136,11 @@ $(function () {
 			lastSymbolType = "none";
 		}
 		else if (keyType === "equals" && inputString.length > 0 && lastSymbolType === "number") {
-			inputString = calculateString(inputString, true);
+			inputString = calculateString(inputString, true).toString();
 			if (inputString.match(/e/)) {
 				isError = true;
 				inputString = "Number limit exceeded.";
 			}
-			inputString = inputString.substring(0, charLimit - 4);
 			setLastSymbolInfo();
 		}
 
