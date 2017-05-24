@@ -57,8 +57,9 @@ $(function () {
 				var operator = subStr.slice(multDivIndex, multDivIndex + 1); // Operator.
 				var rightHandIndex = undefined;
 				var rightHand = undefined;
+
 				while (multDivIndex !== -1) {
-					subStr = subStr.slice(multDivIndex + 1); // Right hand plus everything else
+					subStr = subStr.slice(multDivIndex + 1); // Delete left hand, leave right hand plus everything else.
 					multDivIndex = subStr.search(reMultOrDiv); // End of right hand.
 					rightHandIndex = multDivIndex > -1 ? multDivIndex : subStr.length; // End of one number or end of string?
 					rightHand = parseFloat(subStr.slice(0, rightHandIndex)); // Right hand number.
@@ -72,15 +73,15 @@ $(function () {
 						curVal /= rightHand;
 					}
 
-					operator = subStr.slice(multDivIndex, multDivIndex + 1);
+					operator = subStr.slice(multDivIndex, multDivIndex + 1); // Get operator before it's deleted from string.
 				}
-				numArray.push(curVal); // Multiplication and division completed.
+				numArray.push(curVal); // Multiplication and division completed, so the result can now be treated as addition.
 			}
 			else {
-				numArray.push(parseFloat(subStr));
+				numArray.push(parseFloat(subStr)); // If addition or subtraction, go straight into array to be summed.
 			}
 		}
-		return numArray.reduce(function (accum, curVal) { return accum + curVal; });
+		return numArray.reduce(function (accum, curVal) { return accum + curVal; }); // Add 'em all up.
 	}
 
 	function updateNumDisplay(str) {
